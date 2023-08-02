@@ -13,7 +13,7 @@ def input_error(func):
             return "Invalid input."
     return wrapper
 
-class Field:
+class Name:
     def __init__(self, value=None):
         self.value = value
 
@@ -23,10 +23,13 @@ class Field:
     def update(self, value):
         self.value = value
 
-class Name(Field):
-    pass
+class Phone:
+    def __init__(self, value=None):
+        self.value = value
 
-class Phone(Field):
+    def __str__(self):
+        return str(self.value)
+
     def update(self, value):
         if not value.isdigit():
             raise ValueError
@@ -34,7 +37,13 @@ class Phone(Field):
             raise ValueError
         self.value = value
 
-class Birthday(Field):
+class Birthday:
+    def __init__(self, value=None):
+        self.value = value
+
+    def __str__(self):
+        return str(self.value)
+
     def update(self, value):
         try:
             datetime.strptime(value, "%Y-%m-%d")
@@ -69,6 +78,10 @@ class Record:
             next_birthday = datetime(today.year + 1, int(self.birthday.value[5:7]), int(self.birthday.value[8:10]))
         days = (next_birthday - today).days
         return f"Days until next birthday: {days}"
+    
+    def __str__(self):
+        phone_str = ", ".join(str(phone) for phone in self.phones)
+        return f"Name: {self.name}, Phones: {phone_str}, Birthday: {self.birthday}"
 
 class AddressBook(UserDict):
     def __iter__(self):
