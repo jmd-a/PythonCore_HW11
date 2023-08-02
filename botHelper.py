@@ -13,8 +13,8 @@ def input_error(func):
             return "Invalid input."
     return wrapper
 
-class Name:
-    def __init__(self, value=None):
+class Field:
+    def __init__(self, value):
         self.value = value
 
     def __str__(self):
@@ -23,19 +23,11 @@ class Name:
     def update(self, value):
         self.value = value
 
-class Phone:
-    def __init__(self, value=None):
-        self.value = value
+class Name(Field):
+    pass
 
-    def __str__(self):
-        return str(self.value)
-
-    def update(self, value):
-        if not value.isdigit():
-            raise ValueError
-        if not (7 <= len(value) <= 15):
-            raise ValueError
-        self.value = value
+class Phone(Field):
+    pass
 
 class Birthday:
     def __init__(self, value=None):
@@ -58,8 +50,7 @@ class Record:
         self.phones = []
 
     def add_phone(self, phone_number):
-        phone = Phone(phone_number)
-        self.phones.append(phone)
+        self.phones.append(phone_number)
 
     def remove_phone(self, index):
         if 0 <= index < len(self.phones):
@@ -145,6 +136,8 @@ def main():
             try:
                 name = user_input[1]
                 phone = user_input[2]
+                record = Record(Name(name))
+                record.add_phone(Phone(phone))
                 if len(user_input) > 3:
                     birthday = user_input[3]
                     response = add_contact(name, phone, birthday)
